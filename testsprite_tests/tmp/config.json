@@ -1,0 +1,16 @@
+{
+  "status": "commited",
+  "type": "frontend",
+  "scope": "codebase",
+  "localEndpoint": "http://localhost:5173",
+  "executionArgs": {
+    "projectName": "sun-motors-app - antigravit",
+    "projectPath": "c:\\HYZY-REPOSITORIOS\\Clientes\\grupos-sun-motors\\sun-motors-app - antigravit",
+    "testIds": [],
+    "additionalInstruction": "",
+    "envs": {
+      "API_KEY": "sk-user-pa_qtc8z5NtU6hiTrmsNlZMxXVxu3OkFq2R2_Zie44P78z4GQjMYP-z3k45VWDyIKwEjDwwXg-z7sFXWdc061oD8oxB5JvVSnijxop8xyDIIvYBbVxGq1EAJTpGpIo9vScc"
+    }
+  },
+  "proxy": "http://4a2a6223-f5e8-4f7a-830d-2d9778af9cd6:09SNdBhzPMuomI8OF0QdFufdMgTtMNhQ@tun.testsprite.com:8080"
+}

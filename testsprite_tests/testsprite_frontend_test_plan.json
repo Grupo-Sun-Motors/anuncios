@@ -1,0 +1,550 @@
+[
+  {
+    "id": "TC001",
+    "title": "User Authentication Success",
+    "description": "Verify that a user can log in successfully with valid credentials, and the session is persisted.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Input valid username/email and password"
+      },
+      {
+        "type": "action",
+        "description": "Click the login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Check that login is successful, user is redirected to the appropriate dashboard or onboarding, and session is persisted"
+      }
+    ]
+  },
+  {
+    "id": "TC002",
+    "title": "User Authentication Failure with Incorrect Credentials",
+    "description": "Verify that login fails with invalid username/email or password, and appropriate error message is displayed.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the login page"
+      },
+      {
+        "type": "action",
+        "description": "Input invalid username/email and/or password"
+      },
+      {
+        "type": "action",
+        "description": "Click the login button"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify login failure notification or error message is shown"
+      }
+    ]
+  },
+  {
+    "id": "TC003",
+    "title": "Access Protected Routes Without Authentication",
+    "description": "Attempt to access protected application routes when not authenticated and verify redirection to Auth page.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate directly to a protected route URL without active session"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify user is redirected to the Auth login screen"
+      }
+    ]
+  },
+  {
+    "id": "TC004",
+    "title": "Role-Based Access Control Enforcement on Routes",
+    "description": "Verify that users with different roles can only access routes permitted for their role according to RBAC settings.",
+    "category": "security",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as ADM user and navigate to various application routes"
+      },
+      {
+        "type": "assertion",
+        "description": "Assert access to all ADM-permitted routes is granted"
+      },
+      {
+        "type": "action",
+        "description": "Logout and login as Marketing user"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to access restricted routes (e.g., Configurations, RBAC settings)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify access to these routes is denied with messages or redirection"
+      }
+    ]
+  },
+  {
+    "id": "TC005",
+    "title": "Role-Based UI Element Permission Enforcement",
+    "description": "Verify that interface elements (buttons, menu items) are shown or hidden according to the logged-in user's role.",
+    "category": "security",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as ADM user and open Sidebar and other menus"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify visibility of all admin UI elements"
+      },
+      {
+        "type": "action",
+        "description": "Logout and login as Gestores"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify restricted UI elements are hidden or disabled"
+      }
+    ]
+  },
+  {
+    "id": "TC006",
+    "title": "Campaign Creation Wizard Normal Flow",
+    "description": "Test the multi-step campaign creation wizard to ensure data is accepted correctly at each step, persists, and campaign saves successfully.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Login as authorized user and navigate to Campaigns"
+      },
+      {
+        "type": "action",
+        "description": "Start a new campaign creation wizard"
+      },
+      {
+        "type": "action",
+        "description": "Complete steps: basic info, budget allocation, ad groups, creative assets, and review"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify data is saved at each step and visible when navigating back and forth"
+      },
+      {
+        "type": "action",
+        "description": "Finish wizard and submit campaign"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify campaign is created and success notification shown"
+      }
+    ]
+  },
+  {
+    "id": "TC007",
+    "title": "Campaign Creation Wizard Handles Incomplete Data",
+    "description": "Verify the wizard prevents progression or submission when required data is missing or invalid.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Start campaign creation wizard and omit required fields in a step"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to proceed to the next step"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify validation errors shown and wizard does not proceed"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to submit campaign with incomplete or invalid data"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify submission is blocked with error messages"
+      }
+    ]
+  },
+  {
+    "id": "TC008",
+    "title": "Campaign Wizard Data Persistence During Navigation",
+    "description": "Verify that campaign data entered in the wizard is persisted when navigating between steps or leaving and returning.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Enter data in a campaign wizard step"
+      },
+      {
+        "type": "action",
+        "description": "Navigate to a different step and then back"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify previously entered data remains populated"
+      },
+      {
+        "type": "action",
+        "description": "Leave wizard and return to continue"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify campaign wizard progress is persisted and data intact"
+      }
+    ]
+  },
+  {
+    "id": "TC009",
+    "title": "Leads Import via CSV Valid Data",
+    "description": "Test that leads CSV import accepts valid data linked to existing campaigns and accounts and adds leads correctly.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to Leads management"
+      },
+      {
+        "type": "action",
+        "description": "Import a valid CSV file with lead data matching existing campaigns and accounts"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify leads are imported successfully and visible with correct details"
+      },
+      {
+        "type": "assertion",
+        "description": "Check import success notification"
+      }
+    ]
+  },
+  {
+    "id": "TC010",
+    "title": "Leads Import via CSV Handles Invalid Data",
+    "description": "Verify that invalid or unmatched lead records in CSV import are ignored and appropriate warnings are shown.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Try importing a CSV with leads having invalid campaign/account data or malformed fields"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify invalid records are skipped"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify success report shows counts of imported and ignored entries"
+      },
+      {
+        "type": "assertion",
+        "description": "Check warning notification or error messages are shown"
+      }
+    ]
+  },
+  {
+    "id": "TC011",
+    "title": "Dashboard KPI Display Accuracy",
+    "description": "Verify that the dashboard displays correct and updated KPIs including investment, impressions, clicks, and conversions filtered by brand and time period.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to the Dashboard page"
+      },
+      {
+        "type": "action",
+        "description": "Select various brands and time periods in filters"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify KPI values update accordingly and reflect correct aggregated data"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify trend charts refresh with the selected filters"
+      }
+    ]
+  },
+  {
+    "id": "TC012",
+    "title": "Budget CRUD Operations with Validations",
+    "description": "Verify creation, reading, updating, and deletion of monthly and detailed budgets. Validate fields like status and observations enforce rules.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to Budget management"
+      },
+      {
+        "type": "action",
+        "description": "Create a monthly budget with valid values"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify budget is saved and displayed"
+      },
+      {
+        "type": "action",
+        "description": "Update the budget's status and observations"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify updates are saved correctly"
+      },
+      {
+        "type": "action",
+        "description": "Attempt to enter invalid budget values"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify validation errors prevent saving"
+      },
+      {
+        "type": "action",
+        "description": "Delete a budget entry"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify entry is removed and deletion confirmation is shown"
+      }
+    ]
+  },
+  {
+    "id": "TC013",
+    "title": "Optimization History Tracking and Updates",
+    "description": "Verify that optimization entries record creator, linked campaigns and creatives, and allow status updates tracked with responsible user.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to Optimization section"
+      },
+      {
+        "type": "action",
+        "description": "Create a new optimization entry linked to a campaign and creative"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify creator's identity is recorded and entry appears in history"
+      },
+      {
+        "type": "action",
+        "description": "Update the status of the optimization and assign a responsible user"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify status change is saved and visible"
+      }
+    ]
+  },
+  {
+    "id": "TC014",
+    "title": "Reports Filtering and Metric Aggregation",
+    "description": "Verify cascading filters for brand, platform, and account in Reports, and that metric aggregation and trend charts update accordingly.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Go to Reports page"
+      },
+      {
+        "type": "action",
+        "description": "Apply filters by brand"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify available platforms filter updates accordingly"
+      },
+      {
+        "type": "action",
+        "description": "Apply platform filter"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify account options update accordingly"
+      },
+      {
+        "type": "action",
+        "description": "Select an account filter"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm metrics and charts refresh with aggregated data"
+      }
+    ]
+  },
+  {
+    "id": "TC015",
+    "title": "Report Import with Meta Ads CSV Valid Data",
+    "description": "Verify importing a Meta Ads CSV file normalizes dates weekly and parses monetary and percentage metrics accurately.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Import a valid Meta Ads CSV file in Reports"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify dates are normalized to weekly representation"
+      },
+      {
+        "type": "assertion",
+        "description": "Check monetary and percentage values are parsed and displayed correctly"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify import success notification is shown"
+      }
+    ]
+  },
+  {
+    "id": "TC016",
+    "title": "Media File Upload and Management",
+    "description": "Test that users can upload media files using the public storage client and that uploads do not require session persistence.",
+    "category": "functional",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Navigate to Media management module"
+      },
+      {
+        "type": "action",
+        "description": "Upload various media files (images, videos)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify files upload successfully and are listed"
+      },
+      {
+        "type": "assertion",
+        "description": "Simulate session expiry and retry upload, verify upload still works"
+      }
+    ]
+  },
+  {
+    "id": "TC017",
+    "title": "API Uniform Supabase Error Handling",
+    "description": "Verify that backend API services handle Supabase errors uniformly and propagate exceptions to the frontend for proper messaging.",
+    "category": "error handling",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Simulate Supabase backend failure or bad request in API calls"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify API returns standardized error responses"
+      },
+      {
+        "type": "assertion",
+        "description": "Check frontend displays appropriate error messages or notifications"
+      }
+    ]
+  },
+  {
+    "id": "TC018",
+    "title": "Frontend Loading States and Error Messages",
+    "description": "Verify that UI components show loading indicators during async operations and display meaningful error messages on failures.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Trigger various data fetches and mutations like dashboard, campaign creation, leads import"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify loading indicators appear appropriately during data loading"
+      },
+      {
+        "type": "action",
+        "description": "Simulate API failure"
+      },
+      {
+        "type": "assertion",
+        "description": "Confirm user-facing error messages or toast notifications are displayed"
+      }
+    ]
+  },
+  {
+    "id": "TC019",
+    "title": "Responsive UI and Sidebar Collapse Persistence",
+    "description": "Verify the UI is responsive on various screen sizes and the sidebar collapse state is persisted in localStorage.",
+    "category": "ui",
+    "priority": "Medium",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Resize browser window to desktop, tablet, and mobile widths"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify UI elements adapt layout and remain usable"
+      },
+      {
+        "type": "action",
+        "description": "Toggle sidebar collapse state"
+      },
+      {
+        "type": "action",
+        "description": "Reload the page"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify sidebar collapse state persists correctly"
+      }
+    ]
+  },
+  {
+    "id": "TC020",
+    "title": "Atomic CRUD Operations with User Notifications",
+    "description": "Verify all create, read, update, and delete CRUD operations are atomic and users receive success or failure toasts accordingly.",
+    "category": "functional",
+    "priority": "High",
+    "steps": [
+      {
+        "type": "action",
+        "description": "Perform each CRUD operation in different modules (Campaigns, Budgets, Leads, Optimizations)"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify data integrity is maintained (atomicity) and UI shows toast messages confirming operation result"
+      },
+      {
+        "type": "action",
+        "description": "Trigger backend failures during CRUD"
+      },
+      {
+        "type": "assertion",
+        "description": "Verify rollback occurs and failure notification is presented to user"
+      }
+    ]
+  }
+]

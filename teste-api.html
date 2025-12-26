@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Teste da API</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 1200px; margin: 0 auto; padding: 20px; background-color: #f7f7f7; }
+        h1, h2, h3 { color: #1e3a8a; border-bottom: 2px solid #3b82f6; padding-bottom: 10px; margin-top: 40px; }
+        .api-section { background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+        button { background-color: #3b82f6; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; font-size: 14px; transition: background-color 0.2s; }
+        button:hover { background-color: #2563eb; }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+        .delete-btn { background-color: #ef4444; }
+        .delete-btn:hover { background-color: #dc2626; }
+        pre { background-color: #2d2d2d; color: #f1f1f1; padding: 15px; border-radius: 5px; white-space: pre-wrap; word-wrap: break-word; font-size: 13px; max-height: 520px; overflow-y: auto; }
+        .result.error { color: #ef4444; }
+        input, select, textarea { width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 4px; border: 1px solid #ddd; box-sizing: border-box; }
+        .form-section { padding-top: 15px; border-top: 1px dashed #ccc; margin-top: 20px; }
+        .hidden { display: none; }
+        #campaign-display { margin-top: 20px; border: 1px solid #1e3a8a; padding: 15px; border-radius: 8px; background-color: #e0e7ff; }
+        .ad-group-card { background: #fff; padding: 10px; border-radius: 5px; margin-top: 10px; border: 1px solid #93c5fd; }
+        .creative-card { background: #f0f9ff; padding: 8px; border-radius: 5px; margin-top: 8px; border-left: 3px solid #3b82f6; }
+    </style>
+</head>
+<body>
+
+    <h1>Página de Teste da API Supabase</h1>
+
+    <div class="api-section">
+        <h2>Common API</h2>
+        <button id="getBrandsBtn">Buscar Marcas</button>
+        <pre id="getBrandsResult" class="result"></pre>
+        
+        <button id="getPlatformsBtn">Buscar Plataformas</button>
+        <pre id="getPlatformsResult" class="result"></pre>
+    </div>
+
+    <div class="api-section">
+        <h2>Dashboard API</h2>
+        <button id="getDashboardPerformanceBtn">Buscar Dados de Performance (Dashboard)</button>
+        <pre id="getDashboardPerformanceResult" class="result"></pre>
+    </div>
+
+    <div class="api-section">
+        <h2>Budget API</h2>
+        <button id="getAllBudgetDataBtn">Buscar Todos os Dados de Orçamento</button>
+        <pre id="getAllBudgetDataResult" class="result"></pre>
+    </div>
+
+    <div class="api-section">
+        <h2>Campaigns API</h2>
+        <button id="getCampaignsStatsBtn">Buscar Campanhas com Estatísticas</button>
+        <pre id="getCampaignsStatsResult" class="result"></pre>
+        
+        <div class="form-section">
+            <h3>Testar CRUD Completo de Campanhas</h3>
+            
+            <!-- Seção de Criação de Campanha -->
+            <div id="campaign-creation-section">
+                <form id="campaignForm">
+                    <input type="text" id="campaignName" placeholder="Nome da Nova Campanha" required>
+                    <button type="submit">Criar Campanha Base</button>
+                </form>
+            </div>
+
+            <!-- Seção de Gerenciamento da Campanha (visível após criação) -->
+            <div id="campaign-management-section" class="hidden">
+                <h3 id="current-campaign-name"></h3>
+                
+                <!-- Formulário para Adicionar Grupo de Anúncio -->
+                <div class="form-section">
+                    <h4>Adicionar Novo Grupo de Anúncio</h4>
+                    <form id="adGroupForm">
+                        <input type="text" id="adGroupName" placeholder="Nome do Grupo de Anúncio" required>
+                        <button type="submit">Adicionar Grupo de Anúncio</button>
+                    </form>
+                </div>
+
+                <!-- Container para a campanha e seus grupos -->
+                <div id="campaign-display">
+                    Carregando detalhes da campanha...
+                </div>
+
+                <hr style="margin-top: 20px;">
+                <button id="deleteCampaignBtn" class="delete-btn">Deletar Campanha Inteira</button>
+            </div>
+
+            <pre id="campaignCrudResult" class="result"></pre>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
+    <script type="module">
+        import { commonApi, dashboardApi, campaignsApi, budgetApi } from './api.js';
+
+        // --- INICIALIZAÇÃO ---
+        let supabase;
+        try {
+            supabase = initializeSupabase();
+            console.log("Supabase inicializado com sucesso.");
+        } catch(e) {
+            console.error("Falha ao inicializar Supabase:", e);
+            alert("Falha ao inicializar Supabase. Verifique o console.");
+        }
+        
+        let currentCampaign = null;
+        let validMarcaId = null;
+        let validContaId = null;
+
+        // --- DOM Elements ---
+        const campaignCreationSection = document.getElementById('campaign-creation-section');
+        const campaignManagementSection = document.getElementById('campaign-management-section');
+        const campaignForm = document.getElementById('campaignForm');
+        const adGroupForm = document.getElementById('adGroupForm');
+        const crudResultEl = document.getElementById('campaignCrudResult');
+        const deleteBtn = document.getElementById('deleteCampaignBtn');
+        const campaignDisplayName = document.getElementById('current-campaign-name');
+        const campaignDisplayContainer = document.getElementById('campaign-display');
+        
+        // --- HELPERS ---
+        async function setupTestData() {
+            const resultEl = document.getElementById('campaignCrudResult');
+            try {
+                resultEl.textContent = 'Buscando IDs válidos para o teste...';
+                const [brands, accounts] = await Promise.all([
+                    commonApi.getBrands(),
+                    commonApi.getAdAccounts()
+                ]);
+
+                if (!brands || brands.length === 0) throw new Error('Nenhuma marca encontrada no banco de dados.');
+                if (!accounts || accounts.length === 0) throw new Error('Nenhuma conta de anúncio encontrada no banco de dados.');
+
+                validMarcaId = brands[0].id;
+                validContaId = accounts[0].id;
+
+                resultEl.textContent = `IDs de teste carregados com sucesso.\n- Usando marca_id: ${validMarcaId}\n- Usando conta_de_anuncio_id: ${validContaId}\nPronto para criar a campanha.`;
+
+            } catch (error) {
+                resultEl.textContent = `Erro ao preparar dados de teste: ${error.message}\n\nO CRUD de campanhas não funcionará.`;
+                document.getElementById('campaignForm').querySelector('button').disabled = true;
+                console.error(error);
+            }
+        }
+
+        async function runTest(buttonId, resultId, apiCall) {
+            const btn = document.getElementById(buttonId);
+            const resultEl = document.getElementById(resultId);
+            
+            btn.disabled = true;
+            resultEl.textContent = 'Carregando...';
+            
+            try {
+                const data = await apiCall();
+                resultEl.textContent = JSON.stringify(data, null, 2);
+                resultEl.classList.remove('error');
+            } catch (error) {
+                resultEl.textContent = `Erro: ${error.message}`;
+                resultEl.classList.add('error');
+                console.error(error);
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        // --- EVENT LISTENERS ---
+        document.getElementById('getBrandsBtn').addEventListener('click', () => 
+            runTest('getBrandsBtn', 'getBrandsResult', commonApi.getBrands)
+        );
+
+        document.getElementById('getPlatformsBtn').addEventListener('click', () => 
+            runTest('getPlatformsBtn', 'getPlatformsResult', commonApi.getPlatforms)
+        );
+
+        document.getElementById('getDashboardPerformanceBtn').addEventListener('click', () => {
+            const startDate = '2025-01-01';
+            const endDate = new Date().toISOString().split('T')[0];
+            runTest('getDashboardPerformanceBtn', 'getDashboardPerformanceResult', () => dashboardApi.getPerformanceData(startDate, endDate));
+        });
+        
+        document.getElementById('getAllBudgetDataBtn').addEventListener('click', () => 
+            runTest('getAllBudgetDataBtn', 'getAllBudgetDataResult', budgetApi.getAllBudgetData)
+        );
+        
+        document.getElementById('getCampaignsStatsBtn').addEventListener('click', () => 
+            runTest('getCampaignsStatsBtn', 'getCampaignsStatsResult', campaignsApi.getCampaignsWithStats)
+        );
+
+        // --- GERENCIAMENTO DE ESTADO E RENDERIZAÇÃO ---
+        
+        function renderCampaignDisplay() {
+            if (!currentCampaign) {
+                campaignDisplayContainer.innerHTML = 'Nenhuma campanha carregada.';
+                return;
+            }
+
+            campaignDisplayName.textContent = `Gerenciando Campanha: "${currentCampaign.nome}" (ID: ${currentCampaign.id})`;
+
+            let html = `
+                <div><strong>Status:</strong> ${currentCampaign.status}</div>
+                <div><strong>Orçamento:</strong> ${currentCampaign.orcamento.valor} (${currentCampaign.orcamento.tipo})</div>
+                <h4>Grupos de Anúncio (${currentCampaign.ad_groups.length})</h4>
+            `;
+
+            currentCampaign.ad_groups.forEach(group => {
+                html += `
+                    <div class="ad-group-card" data-group-id="${group.id}">
+                        <strong>${group.nome}</strong> (ID: ${group.id})
+                        <button class="delete-btn" onclick="handleDeleteAdGroup('${group.id}')">Excluir Grupo</button>
+                        
+                        <div class="creatives-section">
+                            <h5>Criativos (${group.creatives.length})</h5>
+                            ${group.creatives.map(creative => `
+                                <div class="creative-card" data-creative-id="${creative.id}">
+                                    <strong>${creative.nome}</strong> (Tipo: ${creative.tipo})
+                                     <button class="delete-btn" style="font-size:10px; padding: 2px 5px;" onclick="handleDeleteCreative('${group.id}', '${creative.id}')">Excluir</button>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="form-section">
+                            <form onsubmit="handleAddCreative(event, '${group.id}')">
+                                <input type="text" name="creativeName" placeholder="Nome do Criativo" required>
+                                <input type="text" name="creativeType" placeholder="Tipo (ex: Imagem, Vídeo)" value="Imagem" required>
+                                <textarea name="creativeTitles" placeholder="Títulos (separados por ; )">Título 1; Título 2</textarea>
+                                <textarea name="creativeUrls" placeholder="URLs (separadas por ; )">https://.../img1.jpg; https://.../img2.jpg</textarea>
+                                <button type="submit">Adicionar Criativo</button>
+                            </form>
+                        </div>
+                    </div>
+                `;
+            });
+
+            campaignDisplayContainer.innerHTML = html;
+        }
+
+        async function saveAndRefresh(actionDescription) {
+            crudResultEl.textContent = `${actionDescription}...`;
+            try {
+                const updatedCampaign = await campaignsApi.saveFullCampaign(currentCampaign);
+                currentCampaign = updatedCampaign;
+                renderCampaignDisplay();
+                crudResultEl.textContent = `Sucesso! ${actionDescription} e campanha atualizada.\n\n${JSON.stringify(currentCampaign, null, 2)}`;
+            } catch (error) {
+                crudResultEl.textContent = `Erro durante "${actionDescription}": ${error.message}`;
+                console.error(error);
+            }
+        }
+
+
+        // --- HANDLERS DE EVENTOS ---
+        
+        campaignForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const campaignName = document.getElementById('campaignName').value;
+            
+            const newCampaign = {
+                id: `new_${Date.now()}`,
+                nome: campaignName,
+                marca_id: validMarcaId, 
+                conta_de_anuncio_id: validContaId,
+                status: 'Ativa',
+                objetivo: 'Leads',
+                conversao_desejada: 'Visitas ao Perfil',
+                orcamento: { valor: 10, tipo: 'Diário' },
+                data_inicio: new Date().toISOString(),
+                ad_groups: []
+            };
+            
+            crudResultEl.textContent = 'Criando campanha...';
+            try {
+                const savedCampaign = await campaignsApi.saveFullCampaign(newCampaign);
+                currentCampaign = savedCampaign;
+                
+                crudResultEl.textContent = `Campanha criada com sucesso!\nID: ${currentCampaign.id}\n\n${JSON.stringify(currentCampaign, null, 2)}`;
+                
+                campaignCreationSection.classList.add('hidden');
+                campaignManagementSection.classList.remove('hidden');
+                
+                renderCampaignDisplay();
+            } catch (error) {
+                crudResultEl.textContent = `Erro ao criar campanha: ${error.message}`;
+                console.error(error);
+            }
+        });
+        
+        adGroupForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentCampaign) return;
+
+            const adGroupName = document.getElementById('adGroupName').value;
+
+            const newGroup = {
+                id: `new_${Date.now()}`,
+                nome: adGroupName,
+                status: 'Ativa',
+                creatives: []
+            };
+
+            currentCampaign.ad_groups.push(newGroup);
+            adGroupForm.reset();
+            
+            await saveAndRefresh('Adicionando grupo de anúncio');
+        });
+
+        window.handleAddCreative = async (event, groupId) => {
+            event.preventDefault();
+            if (!currentCampaign) return;
+
+            const group = currentCampaign.ad_groups.find(g => g.id === groupId);
+            if (!group) {
+                console.error("Grupo não encontrado:", groupId);
+                return;
+            }
+
+            const form = event.target;
+            const creativeName = form.elements.creativeName.value;
+            const creativeType = form.elements.creativeType.value;
+            const creativeTitles = form.elements.creativeTitles.value.split(';').map(t => t.trim());
+            const creativeUrls = form.elements.creativeUrls.value.split(';').map(u => u.trim());
+
+            const newCreative = {
+                id: `new_${Date.now()}`,
+                nome: creativeName,
+                tipo: creativeType,
+                titulos: creativeTitles,
+                urls_criativo: creativeUrls
+            };
+            
+            if (!group.creatives) {
+                group.creatives = [];
+            }
+            group.creatives.push(newCreative);
+            form.reset();
+
+            await saveAndRefresh('Adicionando criativo');
+        }
+
+        window.handleDeleteAdGroup = async (groupId) => {
+            if (!currentCampaign || !confirm(`Tem certeza que deseja remover o grupo de anúncio ${groupId} e todos os seus criativos?`)) return;
+            
+            currentCampaign.ad_groups = currentCampaign.ad_groups.filter(g => g.id !== groupId);
+            await saveAndRefresh('Removendo grupo de anúncio');
+        }
+
+        window.handleDeleteCreative = async (groupId, creativeId) => {
+             if (!currentCampaign || !confirm(`Tem certeza que deseja remover o criativo ${creativeId}?`)) return;
+
+            const group = currentCampaign.ad_groups.find(g => g.id === groupId);
+            if (group) {
+                group.creatives = group.creatives.filter(c => c.id !== creativeId);
+                await saveAndRefresh('Removendo criativo');
+            }
+        }
+        
+        deleteBtn.addEventListener('click', async () => {
+            if (!currentCampaign || !confirm(`Tem certeza que deseja deletar a campanha com ID: ${currentCampaign.id}?`)) return;
+
+            crudResultEl.textContent = 'Deletando campanha...';
+            try {
+                await campaignsApi.deleteCampaign(currentCampaign.id);
+                crudResultEl.textContent = `Campanha ${currentCampaign.id} deletada com sucesso!`;
+                
+                currentCampaign = null;
+                campaignCreationSection.classList.remove('hidden');
+                campaignManagementSection.classList.add('hidden');
+                campaignForm.reset();
+                adGroupForm.reset();
+
+            } catch (error) {
+                crudResultEl.textContent = `Erro ao deletar campanha: ${error.message}`;
+                console.error(error);
+            }
+        });
+
+        // --- INICIALIZAÇÃO DA PÁGINA ---
+        document.addEventListener('DOMContentLoaded', setupTestData);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{
+  "port": 5500,
+  "host": "127.0.0.1",
+  "root": "./",
+  "open": false,
+  "file": "index.html",
+  "wait": 1000,
+  "ignore": "node_modules",
+  "logLevel": 2,
+  "middleware": [
+    {
+      "route": "/*",
+      "handle": function (req, res, next) {
+        const url = req.url.split('?')[0];
+        const path = require('path');
+        const fs = require('fs');
+        
+        // Remove leading slash for path operations
+        const cleanUrl = url.replace(/^\//, '');
+        const filePath = path.join(__dirname, cleanUrl);
+        
+        // Check if it's a request for a static file
+        const hasExtension = /\.[a-zA-Z0-9]+$/.test(url) && !url.endsWith('/');
+        
+        // Check if file exists and is not a directory
+        if (hasExtension) {
+          try {
+            const stats = fs.statSync(filePath);
+            if (stats.isFile()) {
+              // It's a real file, let it through
+              return next();
+            }
+          } catch (e) {
+            // File doesn't exist, fall through to SPA routing
+          }
+        }
+        
+        // It's a SPA route, serve index.html
+        req.url = '/index.html';
+        next();
+      }
+    }
+  ]
+}

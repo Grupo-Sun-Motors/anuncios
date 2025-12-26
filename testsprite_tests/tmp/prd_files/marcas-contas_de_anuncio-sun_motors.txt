@@ -1,0 +1,150 @@
+# 📘 Documentação do Sistema de Gestão de Anúncios Multi-Marcas
+
+Este documento descreve a arquitetura do banco de dados para gestão de contas de anúncios (Meta e Google), focando na resolução de relacionamentos complexos entre Marcas e Contas.
+
+---
+
+## 1. Visão Geral e Arquitetura
+
+O sistema foi projetado para suportar um cenário híbrido onde algumas contas são exclusivas de uma marca, enquanto outras são compartilhadas por várias.
+
+### 🗄️ Estrutura do Banco de Dados (Tabelas)
+
+*   **`plataformas`**: Cadastro dos canais de mídia (ex: Meta Ads, Google Ads).
+*   **`marcas`**: As unidades de negócio (ex: Kia, Suzuki, Haojue, Zontes).
+*   **`contas_de_anuncio`**: As contas reais onde o budget é consumido. Possui vínculo direto (`FK`) com a tabela `plataformas`.
+*   **`marcas_contas` (Tabela Pivô)**: Tabela associativa que define quais marcas utilizam quais contas.
+
+### 🧠 Lógica de Negócio
+
+O sistema trata automaticamente dois cenários distintos:
+
+1.  **Relacionamento 1:1 (Exclusivo)**
+    *   **Cenário:** Meta Ads.
+    *   **Comportamento:** Cada marca possui sua própria conta de anúncio.
+    *   *Exemplo:* A marca `Suzuki` acessa apenas a conta `Meta - Suzuki`.
+
+2.  **Relacionamento N:1 (Compartilhado)**
+    *   **Cenário:** Google Ads (Motos).
+    *   **Comportamento:** Múltiplas marcas utilizam a mesma conta de anúncio.
+    *   *Exemplo:* As marcas `Suzuki`, `Haojue` e `Zontes` apontam para a mesma conta `Google - Motos Sun Motors`.
+
+---
+
+## 🚀 Solução de Acesso: A View `relatorio_completo_marcas`
+
+Para abstrair a complexidade dos `JOINs` e evitar erros na recuperação de dados, foi criada uma **View SQL** que deve ser o ponto único de acesso para consultas de leitura.
+
+### Definição da View
+A view consolida as 4 tabelas principais em uma estrutura plana e simples.
+
+| Campo Retornado | Descrição |
+| :--- | :--- |
+| `marca` | Nome da marca (ex: "Suzuki") |
+| `plataforma` | Nome da plataforma (ex: "Google Ads") |
+| `conta_nome` | Nome da conta de anúncio (ex: "Google - Motos Sun Motors") |
+| `conta_id` | UUID da conta de anúncio |
+| `marca_id` | UUID da marca |
+| `plataforma_id` | UUID da plataforma |
+
+---
+
+## 👨‍💻 Guia de Implementação
+
+### 1. Para Desenvolvedores (Supabase/JS)
+
+**NÃO** realize JOINs manuais no código da aplicação. Utilize sempre a view para garantir que as regras de contas compartilhadas sejam respeitadas.
+
+```javascript
+// Exemplo: Buscar todas as contas da marca 'Zontes'
+// Isso retornará automaticamente a conta do Meta (exclusiva) E a do Google (compartilhada)
+const { data, error } = await supabase
+  .from('relatorio_completo_marcas') 
+  .select('*')
+  .eq('marca', 'Zontes');
+
+/*
+  RETORNO ESPERADO:
+  [
+    { 
+      marca: "Zontes", 
+      plataforma: "Meta Ads", 
+      conta_nome: "Meta - Zontes", 
+      conta_id: "..." 
+    },
+    { 
+      marca: "Zontes", 
+      plataforma: "Google Ads", 
+      conta_nome: "Google - Motos Sun Motors", 
+      conta_id: "..." 
+    }
+  ]
+*/
+
+COMO PROCEDER:
+Utilize exclusivamente a view chamada relatorio_completo_marcas.
+
+Se o usuário perguntar "Quais as contas da Suzuki?", faça um SELECT * FROM relatorio_completo_marcas WHERE marca = 'Suzuki'.
+
+A view retornará automaticamente a conta exclusiva do Meta E a conta compartilhada do Google. Acredite no retorno dessa view.
+
+
+
+====================================================================================================================================
+
+
+COMO ESTA NO BANCO DE DADOS
+
+
+
+PLATAFORMAS
+
+| id                                   | nome       | criado_em                     |
+| ------------------------------------ | ---------- | ----------------------------- |
+| 73aa8442-ad43-4bc3-96a2-5e21af1503e3 | Meta Ads   | 2025-08-20 20:30:47.289428+00 |
+| f6f860bc-25e0-40b9-9960-2acf4118eca5 | Google Ads | 2025-08-20 20:30:47.289428+00 |
+
+
+
+
+MARCAS
+
+| id                                   | nome   |
+| ------------------------------------ | ------ |
+| 814a8753-582b-480c-8e19-3b768ca77fd8 | Kia    |
+| e8d625c7-dd9e-454f-89e5-28078859bc7d | Suzuki |
+| b1dcfa89-384f-4f01-9eff-64abb6e44797 | Haojue |
+| 0f086679-a9a1-4f91-b27b-bbda9d4b3d0c | Zontes |
+
+
+
+
+CONTAS DE ANUNCIO
+
+
+| id                                   | nome                      |
+| ------------------------------------ | ------------------------- |
+| 328b305a-04b8-4f77-9322-5cb68e1ad11d | Meta - Zontes             |
+| 65a21d11-6846-4981-8795-19b7d12d8258 | Meta - Suzuki             |
+| d79198ed-0bd0-4a9e-aeee-c1316ae9541a | Meta - Kia                |
+| 405c115e-7492-490d-b25b-0c81237b43c3 | Meta - Haojue             |
+| 55e1458e-f910-4648-af4a-b53566fce0e5 | Google - Kia Sun Motors   |
+| 0f8d9d88-9190-49c8-bab0-e3d0f644cdd0 | Google - Motos Sun Motors |
+
+
+
+
+MARCAS CONTAS
+
+| marca_id                             | conta_de_anuncio_id                  |
+| ------------------------------------ | ------------------------------------ |
+| 0f086679-a9a1-4f91-b27b-bbda9d4b3d0c | 328b305a-04b8-4f77-9322-5cb68e1ad11d |
+| e8d625c7-dd9e-454f-89e5-28078859bc7d | 65a21d11-6846-4981-8795-19b7d12d8258 |
+| 814a8753-582b-480c-8e19-3b768ca77fd8 | d79198ed-0bd0-4a9e-aeee-c1316ae9541a |
+| b1dcfa89-384f-4f01-9eff-64abb6e44797 | 405c115e-7492-490d-b25b-0c81237b43c3 |
+| 814a8753-582b-480c-8e19-3b768ca77fd8 | 55e1458e-f910-4648-af4a-b53566fce0e5 |
+| 0f086679-a9a1-4f91-b27b-bbda9d4b3d0c | 0f8d9d88-9190-49c8-bab0-e3d0f644cdd0 |
+| e8d625c7-dd9e-454f-89e5-28078859bc7d | 0f8d9d88-9190-49c8-bab0-e3d0f644cdd0 |
+| b1dcfa89-384f-4f01-9eff-64abb6e44797 | 0f8d9d88-9190-49c8-bab0-e3d0f644cdd0 |
+
+

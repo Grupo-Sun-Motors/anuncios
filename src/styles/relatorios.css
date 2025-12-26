@@ -1,0 +1,980 @@
+/* Relatórios Page Styles */
+.report-filters-section {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+}
+
+.filters-container {
+    display: flex;
+    align-items: end;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 160px;
+}
+
+.filter-group label {
+    font-weight: 500;
+    color: #1f2937;
+    font-size: 0.875rem;
+}
+
+.filter-group select.filter-input {
+    background-color: white;
+    cursor: pointer;
+}
+
+.filter-group select.filter-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
+}
+
+.filter-input {
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    font-size: 0.875rem;
+}
+
+.filter-input:focus {
+    outline: none;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 1px #2563eb;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* KPI Section */
+.kpi-section {
+    margin-bottom: 2rem;
+}
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.kpi-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.kpi-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.kpi-header h3 {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.kpi-header i {
+    width: 20px;
+    height: 20px;
+    color: #2563eb;
+}
+
+.kpi-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+/* Loading and Error States */
+.loading-state,
+.error-state {
+    text-align: center;
+    padding: 3rem;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    margin-bottom: 2rem;
+}
+
+.loading-spinner i {
+    width: 32px;
+    height: 32px;
+    color: #2563eb;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error-icon i {
+    width: 32px;
+    height: 32px;
+    color: #ef4444;
+    margin-bottom: 1rem;
+}
+
+.loading-state p,
+.error-state p {
+    color: #6b7280;
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
+
+/* Detailed Report Section */
+.detailed-report-section {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.detailed-report-section .section-header {
+    background: #f9fafb;
+    padding: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.detailed-report-section .section-header h2 {
+    margin: 0;
+    color: #1f2937;
+    font-size: 1.25rem;
+}
+
+#detailed-report-container {
+    padding: 1.5rem;
+}
+
+/* Account Section Styles */
+.account-section {
+    margin-bottom: 2rem;
+}
+
+.account-section:last-child {
+    margin-bottom: 0;
+}
+
+.account-header {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    margin-bottom: 0;
+}
+
+.account-header h3 {
+    margin: 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.account-metrics {
+    background: #f8fafc;
+    padding: 1rem 1.5rem;
+    border: 1px solid #e2e8f0;
+    border-top: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+}
+
+.account-metric {
+    text-align: center;
+}
+
+.account-metric-label {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+}
+
+.account-metric-value {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1e293b;
+}
+
+/* Brand Section Styles */
+.brand-section {
+    margin-bottom: 1.5rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 0 0 0.5rem 0.5rem;
+}
+
+.brand-section:last-child {
+    margin-bottom: 0;
+}
+
+.brand-header {
+    background: #f1f5f9;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.brand-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #475569;
+    font-weight: 600;
+}
+
+.brand-metrics {
+    background: #fafbfc;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #e2e8f0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.75rem;
+}
+
+.brand-metric {
+    text-align: center;
+}
+
+.brand-metric-label {
+    font-size: 0.7rem;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+}
+
+.brand-metric-value {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #334155;
+}
+
+/* Campaign Table Styles */
+.campaigns-table-container {
+    overflow-x: auto;
+}
+
+.campaigns-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+}
+
+.campaigns-table th,
+.campaigns-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+}
+
+.campaigns-table th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.campaigns-table tbody tr:hover {
+    background: #f9fafb;
+}
+
+.campaign-name {
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.metric-value {
+    font-weight: 500;
+}
+
+.metric-currency {
+    color: #059669;
+}
+
+.metric-percentage {
+    color: #2563eb;
+}
+
+.metric-number {
+    color: #374151;
+}
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #6b7280;
+}
+
+.empty-state i {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+    color: #d1d5db;
+}
+
+.empty-state h3 {
+    margin: 0 0 0.5rem 0;
+    color: #374151;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 0.875rem;
+}
+
+.empty-state-suggestion {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    margin-top: 0.5rem;
+}
+
+/* Mode Toggle Button */
+.page-actions .btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Comparison Mode Styles */
+.filter-group.full-width {
+    flex: 1;
+    min-width: 300px;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-top: none;
+    border-radius: 0 0 0.375rem 0.375rem;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.search-result-item {
+    padding: 0.75rem;
+    cursor: pointer;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.search-result-item:hover {
+    background: #f9fafb;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.item-name {
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.item-details {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+.no-results {
+    padding: 0.75rem;
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* Selected Items */
+.selected-items {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+.selected-items h4 {
+    margin: 0 0 0.75rem 0;
+    color: #374151;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.selected-items-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.selected-item-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #2563eb;
+    color: white;
+    padding: 0.375rem 0.75rem;
+    border-radius: 1rem;
+    font-size: 0.875rem;
+}
+
+.selected-item-tag .remove-item {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 0;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.2s;
+}
+
+.selected-item-tag .remove-item:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.no-items {
+    color: #6b7280;
+    font-style: italic;
+    font-size: 0.875rem;
+}
+
+/* Performance KPIs with Comparison */
+.kpi-values {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.kpi-current,
+.kpi-previous,
+.kpi-variation {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.kpi-label {
+    font-size: 0.75rem;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.kpi-value {
+    font-weight: 600;
+}
+
+.kpi-current .kpi-value {
+    font-size: 1.1rem;
+    color: #1f2937;
+}
+
+.kpi-previous .kpi-value {
+    font-size: 0.9rem;
+    color: #6b7280;
+}
+
+.kpi-variation .kpi-value.positive {
+    color: #059669;
+}
+
+.kpi-variation .kpi-value.negative {
+    color: #dc2626;
+}
+
+/* Simple KPI Grid for Comparison Mode */
+.kpi-grid.simple .kpi-card {
+    padding: 1rem;
+}
+
+.kpi-grid.simple .kpi-value {
+    font-size: 1.25rem;
+    margin-top: 0.5rem;
+}
+
+/* Performance Comparison Table */
+.performance-comparison-table {
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+.performance-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.performance-table th,
+.performance-table td {
+    padding: 0.75rem 0.5rem;
+    text-align: center;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.8rem;
+}
+
+.performance-table th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.performance-table .account-name {
+    text-align: left;
+    font-weight: 600;
+    background: #f3f4f6;
+}
+
+.metric-variation.positive {
+    color: #059669;
+    font-weight: 600;
+}
+
+.metric-variation.negative {
+    color: #dc2626;
+    font-weight: 600;
+}
+
+/* Comparison Table */
+.comparison-table-container {
+    overflow-x: auto;
+    margin-top: 1rem;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+}
+
+.comparison-table th {
+    background: #f9fafb;
+    font-weight: 600;
+    color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.comparison-table .campaign-row:hover {
+    background: #f9fafb;
+}
+
+.comparison-table .item-name {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+/* Hierarchical Report Styles */
+.hierarchical-report .account-section {
+    margin-bottom: 1.5rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.hierarchical-report .account-header {
+    background: #1f2937;
+    color: white;
+    padding: 0.75rem 1.5rem;
+}
+
+.hierarchical-report .account-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.hierarchical-report .brand-section {
+    margin-bottom: 0;
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    border-radius: 0;
+}
+
+.hierarchical-report .brand-header {
+    background: #f3f4f6;
+    padding: 0.75rem 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.hierarchical-report .brand-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #374151;
+}
+
+.brand-body {
+    padding: 0;
+    overflow-x: auto;
+}
+
+.performance-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.performance-table th,
+.performance-table td {
+    padding: 0.75rem;
+    text-align: right;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.875rem;
+    white-space: nowrap;
+}
+
+.performance-table .campaign-name {
+    font-weight: 500;
+}
+
+.performance-table th.first-column,
+.performance-table td:first-child {
+    text-align: left;
+}
+
+.performance-table-ad-set-level,
+.performance-table-creative-level {
+    background-color: #f9fafb;
+}
+
+.expandable-row {
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.expandable-row:hover {
+    background-color: #f9fafb;
+}
+
+.toggle-icon {
+    width: 16px;
+    height: 16px;
+    margin-right: 0.5rem;
+    transition: transform 0.2s ease-in-out;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.toggle-icon.open {
+    transform: rotate(90deg);
+}
+
+.details-row {
+    display: none;
+}
+
+.details-row.visible {
+    display: table-row;
+}
+
+.details-row>td {
+    padding: 0;
+    background-color: #f9fafb;
+}
+
+.details-row .performance-table {
+    border: none;
+    margin: 0.5rem 0;
+}
+
+.ad-set-name,
+.creative-name {
+    padding-left: 2.5rem !important;
+}
+
+.creative-name {
+    padding-left: 4.5rem !important;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .filters-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-group {
+        min-width: unset;
+    }
+
+    .filter-actions {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .kpi-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .kpi-card {
+        padding: 1rem;
+    }
+
+    .kpi-value {
+        font-size: 1.25rem;
+    }
+
+    .account-metrics {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.75rem;
+    }
+
+    .brand-metrics {
+        grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+        gap: 0.5rem;
+    }
+
+    .campaigns-table th,
+    .campaigns-table td {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+
+    #detailed-report-container {
+        padding: 1rem;
+    }
+
+    .kpi-values {
+        gap: 0.125rem;
+    }
+
+    .kpi-current .kpi-value {
+        font-size: 1rem;
+    }
+
+    .kpi-previous .kpi-value,
+    .kpi-variation .kpi-value {
+        font-size: 0.8rem;
+    }
+
+    .selected-items-container {
+        gap: 0.25rem;
+    }
+
+    .selected-item-tag {
+        font-size: 0.8rem;
+        padding: 0.25rem 0.5rem;
+    }
+
+    .performance-table th,
+    .performance-table td {
+        padding: 0.5rem 0.25rem;
+        font-size: 0.7rem;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+        padding: 0.5rem;
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .kpi-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .account-metrics,
+    .brand-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .filters-container {
+        flex-direction: column;
+    }
+
+    .filter-group.full-width {
+        min-width: unset;
+    }
+
+    .kpi-card {
+        padding: 1rem;
+    }
+}
+
+/* Brand Investment Grid */
+.brand-investment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.brand-investment-card {
+    background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+    border: 1px solid #e2e8f0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.brand-investment-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+    border-color: #2563eb;
+}
+
+.brand-card-header {
+    background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+    padding: 0.875rem 1rem;
+}
+
+.brand-card-header h4 {
+    margin: 0;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.brand-card-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+    padding: 1rem;
+}
+
+.brand-metric-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    background: #f9fafb;
+    border-radius: 0.5rem;
+    text-align: center;
+}
+
+.brand-metric-item .metric-label {
+    font-size: 0.7rem;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 500;
+}
+
+.brand-metric-item .metric-value {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.brand-metric-item .metric-value.currency {
+    color: #059669;
+}
+
+.brand-metric-item .metric-value.percentage {
+    color: #2563eb;
+}
+
+/* Animate spin for loading */
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin {
+    animation: spin 1s linear infinite;
+}
+
+/* Responsive adjustments for brand investment grid */
+@media (max-width: 768px) {
+    .brand-investment-grid {
+        grid-template-columns: 1fr;
+        padding: 0.75rem;
+    }
+
+    .brand-card-metrics {
+        gap: 0.375rem;
+        padding: 0.75rem;
+    }
+
+    .brand-metric-item .metric-value {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand-investment-grid {
+        gap: 0.75rem;
+    }
+
+    .brand-card-header {
+        padding: 0.75rem;
+    }
+
+    .brand-card-header h4 {
+        font-size: 0.9rem;
+    }
+
+    .brand-card-metrics {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Summary Info Box */
+.report-summary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: #f0f9ff;
+    border-radius: 0.5rem;
+    color: #0369a1;
+    font-size: 0.875rem;
+    border: 1px solid #bae6fd;
+}

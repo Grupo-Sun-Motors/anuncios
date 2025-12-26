@@ -1,0 +1,91 @@
+{
+  "tech_stack": [
+    "javascript",
+    "react",
+    "vite",
+    "supabase-js",
+    "chart.js",
+    "papaparse",
+    "xlsx"
+  ],
+  "features": [
+    {
+      "name": "auth-provider",
+      "description": "Contexto de autenticação Supabase com heartbeat, persistência em localStorage e busca de perfil",
+      "files": [
+        "src/contexts/AuthContext.jsx",
+        "src/services-apis/supabase/perfilUsuarioService.js",
+        "src/services-apis/supabase/client.js"
+      ]
+    },
+    {
+      "name": "auth-ui",
+      "description": "Tela de login, cadastro e recuperação com navegação pós-login",
+      "files": [
+        "src/pages/Auth.jsx"
+      ]
+    },
+    {
+      "name": "routing-protegido",
+      "description": "Proteção de rotas e layout principal com redirecionamento para /auth",
+      "files": [
+        "src/App.jsx",
+        "src/layouts/MainLayout.jsx"
+      ]
+    },
+    {
+      "name": "supabase-clients",
+      "description": "Cliente Supabase principal com persistência e cliente de mídias sem sessão persistente",
+      "files": [
+        "src/services-apis/supabase/client.js",
+        "src/services-apis/supabase/mediaClient.js"
+      ]
+    },
+    {
+      "name": "services-supabase",
+      "description": "Serviços de domínio (anúncios, campanhas, leads, relatórios, perfis) sobre Supabase",
+      "files": [
+        "src/services-apis/supabase/anunciosService.js",
+        "src/services-apis/supabase/campanhasService.js",
+        "src/services-apis/supabase/leadsService.js",
+        "src/services-apis/supabase/relatoriosService.js",
+        "src/services-apis/supabase/perfilUsuarioService.js"
+      ]
+    },
+    {
+      "name": "dashboard-modulos",
+      "description": "Módulos de UI para dashboards, campanhas, leads, orçamentos, uploads e mídias",
+      "files": [
+        "src/pages/Dashboard.jsx",
+        "src/pages/Campanhas.jsx",
+        "src/pages/Leads.jsx",
+        "src/pages/Budget.jsx",
+        "src/pages/Uploads.jsx",
+        "src/pages/Midias.jsx",
+        "src/components"
+      ]
+    },
+    {
+      "name": "ui-components",
+      "description": "Componentes reutilizáveis como modais, headers, badges, inputs e gráficos",
+      "files": [
+        "src/components/common/Modal.jsx",
+        "src/components/common/PageHeader.jsx",
+        "src/components/common/StatusBadge.jsx",
+        "src/components/CurrencyInput.jsx",
+        "src/components/dashboard"
+      ]
+    },
+    {
+      "name": "legacy-scripts",
+      "description": "Scripts e páginas HTML estáticas para testes e compatibilidade legada",
+      "files": [
+        "src/script.legacy.js",
+        "src/legacy-services.js",
+        "teste-api.html",
+        "test-api.js"
+      ]
+    }
+  ]
+}
+

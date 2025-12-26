@@ -1,0 +1,52 @@
+SUPABASE CONFIG
+
+
+Project: Trafego Pago
+
+Project ID: agdvozsqcrszflzsimyl
+
+Project URL: https://agdvozsqcrszflzsimyl.supabase.co
+
+Anon Public: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnZHZvenNxY3JzemZsenNpbXlsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM4MDUzODksImV4cCI6MjA2OTM4MTM4OX0.pgYBlwUqLZZ7I5EOD1LFcSeBrrTy1Jf1Ep8zLjYj3LQ
+
+Service role: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFnZHZvenNxY3JzemZsenNpbXlsIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzgwNTM4OSwiZXhwIjoyMDY5MzgxMzg5fQ.Z_bql0GsN-57kA-Jg7j4HS1gqmYIA1SzyCk-GrDhgs8
+
+Legacy JWT Keys: vuRZJdrB9L5/jgRV2eMhiKCZrP9ag2Va2OLOBbpczMoNVIcNGuyQaXV6pbncgGvS0AjWJZP2edghBjPI5iCEYw==
+
+Database Password: 0GtTsB9nadYoAKnP
+
+Acess token: (APP-TOPSTACK) sbp_53bd83f42af329f5c4660fa1cafee9a94eff9488
+
+
+
+
+=================================================================================================================
+
+GitHub
+
+login: mktsunmotors@gmail.com
+Senha: AlicE20@
+
+
+================================================================================
+
+SUPABASE ESPECIFICO PARA OS CRIATIVOS:
+
+ (
+    'gruposunmotors',
+    'Gestão de anúncios',
+    '{
+        "supabase_config": {
+            "project_ref": "qeckbczlymcidnuqtrxc",
+            "project_url": "https://qeckbczlymcidnuqtrxc.supabase.co",
+            "auth": {
+                "personal_access_token": "sbp_afd4ead55be5965e60146014749a2a35a1795f65",
+                "anon_public_key": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFlY2tiY3pseW1jaWRudXF0cnhjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgxMjczODgsImV4cCI6MjA3MzcwMzM4OH0.X-7la7rqgc605B-ylVpT2dODYdoLNzGyNAfCkO08QLE",
+                "publishable_key": "sb_publishable_RNcCphSSeisqW-goz7F38A_PVwxAGzD"
+            }
+        },
+        "meta": {
+            "description": "Token de acesso banco de dados supabase cliente gruposunmotors",
+            "environment": "production"
+        }
+    }'::jsonb

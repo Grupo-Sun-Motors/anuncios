@@ -1,0 +1,56 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs
+*.njsproj
+*.sln
+*.sw?
+
+# Environment variables (CRITICAL)
+.env
+.env.test
+.env.production
+.env.local
+.env.*
+
+# Temporary and local data folders (Sensitive Client Data)
+TEMPORARIOS/
+planilhas-sun_motors/
+documentation/reparos/
+documentation/documantacao_antiga/
+referencias/
+
+# Testing
+coverage/
+test-results/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Vite/PWA Components (if generated outside dist)
+public/sw.js
+public/workbox-*.js

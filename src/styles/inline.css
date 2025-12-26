@@ -1,0 +1,82 @@
+.modal-content.large {
+    max-width: 800px;
+}
+
+.importer-step {
+    margin-bottom: 24px;
+}
+
+.form-grid-importer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+}
+
+.file-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.feedback-panel {
+    margin-top: 20px;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 15px;
+    min-height: 150px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.feedback-panel h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+#importer-log,
+#importer-log-modal {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: monospace;
+    font-size: 13px;
+}
+
+#start-import-btn .spinner,
+#start-import-btn-modal .spinner {
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+    margin-left: 10px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.whatsapp-link {
+    color: #25D366;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: opacity 0.2s;
+}
+
+.whatsapp-link:hover {
+    opacity: 0.8;
+}
+
+.estagio-cell {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.estagio-cell i {
+    width: 20px;
+    height: 20px;
+}
+
+.leads-table td:first-child {
+    text-align: center;
+}

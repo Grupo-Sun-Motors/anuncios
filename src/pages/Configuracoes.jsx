@@ -558,35 +558,37 @@ const Configuracoes = () => {
                                 marginTop: '20px',
                                 marginBottom: '30px'
                             }}>
-                                {Object.entries(CARGO_DESCRIPTIONS).map(([cargo, info]) => (
-                                    <div key={cargo} style={{
-                                        background: 'var(--bg-secondary)',
-                                        padding: '15px',
-                                        borderRadius: '8px',
-                                        border: '1px solid var(--border-color)',
-                                        borderLeft: `4px solid ${info.corBadge}`
-                                    }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
-                                            <Shield size={16} style={{ color: info.corBadge }} />
-                                            <strong style={{ color: info.corBadge }}>{info.label}</strong>
-                                        </div>
-                                        <p style={{ fontSize: '0.85rem', color: '#6b7280', marginBottom: '10px' }}>
-                                            {info.description}
-                                        </p>
-                                        <div style={{ fontSize: '0.8rem' }}>
-                                            <div style={{ marginBottom: '5px' }}>
-                                                <Check size={12} style={{ color: '#10b981', marginRight: '4px' }} />
-                                                <span style={{ color: '#374151' }}>{info.acessos.slice(0, 4).join(', ')}{info.acessos.length > 4 ? '...' : ''}</span>
+                                {Object.entries(CARGO_DESCRIPTIONS)
+                                    .filter(([cargo]) => cargo !== CARGOS.ADM && cargo !== CARGOS.SOCIOS)
+                                    .map(([cargo, info]) => (
+                                        <div key={cargo} style={{
+                                            background: 'var(--bg-secondary)',
+                                            padding: '15px',
+                                            borderRadius: '8px',
+                                            border: '1px solid var(--border-color)',
+                                            borderLeft: `4px solid ${info.corBadge}`
+                                        }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                                                <Shield size={16} style={{ color: info.corBadge }} />
+                                                <strong style={{ color: info.corBadge }}>{info.label}</strong>
                                             </div>
-                                            {info.restricoes && (
-                                                <div>
-                                                    <X size={12} style={{ color: '#ef4444', marginRight: '4px' }} />
-                                                    <span style={{ color: '#9ca3af' }}>{info.restricoes.slice(0, 3).join(', ')}{info.restricoes.length > 3 ? '...' : ''}</span>
+                                            <p style={{ fontSize: '0.85rem', color: '#6b7280', marginBottom: '10px' }}>
+                                                {info.description}
+                                            </p>
+                                            <div style={{ fontSize: '0.8rem' }}>
+                                                <div style={{ marginBottom: '5px' }}>
+                                                    <Check size={12} style={{ color: '#10b981', marginRight: '4px' }} />
+                                                    <span style={{ color: '#374151' }}>{info.acessos.slice(0, 4).join(', ')}{info.acessos.length > 4 ? '...' : ''}</span>
                                                 </div>
-                                            )}
+                                                {info.restricoes && (
+                                                    <div>
+                                                        <X size={12} style={{ color: '#ef4444', marginRight: '4px' }} />
+                                                        <span style={{ color: '#9ca3af' }}>{info.restricoes.slice(0, 3).join(', ')}{info.restricoes.length > 3 ? '...' : ''}</span>
+                                                    </div>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))}
                             </div>
 
                             {/* Lista de Usuários */}
@@ -611,55 +613,55 @@ const Configuracoes = () => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {allUsers.map((user) => (
-                                                <tr key={user.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
-                                                    <td style={{ padding: '12px 15px' }}>{user.nome || '-'}</td>
-                                                    <td style={{ padding: '12px 15px', color: '#6b7280' }}>{user.email || '-'}</td>
-                                                    <td style={{ padding: '12px 15px' }}>
-                                                        <span style={{
-                                                            display: 'inline-block',
-                                                            padding: '4px 10px',
-                                                            borderRadius: '20px',
-                                                            fontSize: '0.8rem',
-                                                            fontWeight: '500',
-                                                            background: CARGO_DESCRIPTIONS[user.cargo]?.corBadge || '#6b7280',
-                                                            color: 'white'
-                                                        }}>
-                                                            {user.cargo || 'Não definido'}
-                                                        </span>
-                                                    </td>
-                                                    <td style={{ padding: '12px 15px', textAlign: 'center' }}>
-                                                        <select
-                                                            id={`cargo-select-${user.id}`}
-                                                            name={`cargo-select-${user.id}`}
-                                                            value=""
-                                                            onChange={(e) => {
-                                                                const newValue = e.target.value;
-                                                                if (newValue && newValue !== user.cargo) {
-                                                                    setSelectedUser(user);
-                                                                    setNewCargo(newValue);
-                                                                    setShowConfirmModal(true);
-                                                                }
-                                                                e.target.value = '';
-                                                            }}
-                                                            aria-label={`Alterar cargo de ${user.nome || user.email}`}
-                                                            style={{
-                                                                padding: '6px 10px',
-                                                                borderRadius: '6px',
-                                                                border: '1px solid var(--border-color)',
-                                                                background: 'var(--bg-primary)',
-                                                                cursor: 'pointer'
-                                                            }}
-                                                        >
-                                                            <option value="">Alterar para...</option>
-                                                            <option value={CARGOS.ADM}>{CARGO_DESCRIPTIONS[CARGOS.ADM].label}</option>
-                                                            <option value={CARGOS.SOCIOS}>{CARGO_DESCRIPTIONS[CARGOS.SOCIOS].label}</option>
-                                                            <option value={CARGOS.GESTORES}>{CARGO_DESCRIPTIONS[CARGOS.GESTORES].label}</option>
-                                                            <option value={CARGOS.MARKETING}>{CARGO_DESCRIPTIONS[CARGOS.MARKETING].label}</option>
-                                                        </select>
-                                                    </td>
-                                                </tr>
-                                            ))}
+                                            {allUsers
+                                                .filter(user => user.cargo !== CARGOS.ADM && user.cargo !== CARGOS.SOCIOS)
+                                                .map((user) => (
+                                                    <tr key={user.id} style={{ borderBottom: '1px solid var(--border-color)' }}>
+                                                        <td style={{ padding: '12px 15px' }}>{user.nome || '-'}</td>
+                                                        <td style={{ padding: '12px 15px', color: '#6b7280' }}>{user.email || '-'}</td>
+                                                        <td style={{ padding: '12px 15px' }}>
+                                                            <span style={{
+                                                                display: 'inline-block',
+                                                                padding: '4px 10px',
+                                                                borderRadius: '20px',
+                                                                fontSize: '0.8rem',
+                                                                fontWeight: '500',
+                                                                background: CARGO_DESCRIPTIONS[user.cargo]?.corBadge || '#6b7280',
+                                                                color: 'white'
+                                                            }}>
+                                                                {user.cargo || 'Não definido'}
+                                                            </span>
+                                                        </td>
+                                                        <td style={{ padding: '12px 15px', textAlign: 'center' }}>
+                                                            <select
+                                                                id={`cargo-select-${user.id}`}
+                                                                name={`cargo-select-${user.id}`}
+                                                                value=""
+                                                                onChange={(e) => {
+                                                                    const newValue = e.target.value;
+                                                                    if (newValue && newValue !== user.cargo) {
+                                                                        setSelectedUser(user);
+                                                                        setNewCargo(newValue);
+                                                                        setShowConfirmModal(true);
+                                                                    }
+                                                                    e.target.value = '';
+                                                                }}
+                                                                aria-label={`Alterar cargo de ${user.nome || user.email}`}
+                                                                style={{
+                                                                    padding: '6px 10px',
+                                                                    borderRadius: '6px',
+                                                                    border: '1px solid var(--border-color)',
+                                                                    background: 'var(--bg-primary)',
+                                                                    cursor: 'pointer'
+                                                                }}
+                                                            >
+                                                                <option value="">Alterar para...</option>
+                                                                <option value={CARGOS.GESTORES}>{CARGO_DESCRIPTIONS[CARGOS.GESTORES].label}</option>
+                                                                <option value={CARGOS.MARKETING}>{CARGO_DESCRIPTIONS[CARGOS.MARKETING].label}</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                ))}
                                         </tbody>
                                     </table>
                                 </div>
